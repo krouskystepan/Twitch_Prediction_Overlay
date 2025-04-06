@@ -3,6 +3,6 @@ const router = express.Router()
 
 import * as predictionsController from '../controllers/predictions'
 
-router.get('/', predictionsController.getPredictions)
+router.get('/:channelName', predictionsController.getPredictions)
 
 module.exports = router
