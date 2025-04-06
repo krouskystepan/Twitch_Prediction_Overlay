@@ -24,7 +24,6 @@ type Outcome = {
 - LOCKED: The broadcaster locked the Prediction, which means viewers can no longer make predictions.
 - RESOLVED: The winning outcome was determined and the Channel Points were distributed to the viewers who predicted the correct outcome.
 */
-// TOP PREDICTORS IS NOT IN THIS MOCK - TBD
 type MockPrediction = {
   id: string
   broadcaster_id: string
@@ -51,6 +50,23 @@ const generateOutcomes = (count: number): Outcome[] => {
     top_predictors: null,
     color: count === 2 ? (i === 0 ? 'BLUE' : 'PINK') : 'BLUE',
   }))
+}
+
+const generateTopPredictors = (
+  count: number,
+  isWin = false
+): TopPredictor[] => {
+  return Array.from({ length: count }, () => {
+    const randomNum = Math.floor(Math.random() * 9000) + 1000
+
+    return {
+      user_id: `user-${randomNum}`,
+      user_name: `User${randomNum}`,
+      user_login: `user${randomNum}`,
+      channel_points_used: Math.floor(Math.random() * 5000) + 100,
+      channel_points_won: isWin ? Math.floor(Math.random() * 5000) : 0,
+    }
+  })
 }
 
 export const getMockPrediction = (req: Request, res: Response): void => {
@@ -159,18 +175,15 @@ export const resolveMockPrediction = (req: Request, res: Response): void => {
   currentMockPrediction.outcomes = currentMockPrediction.outcomes.map(
     (outcome) => ({
       ...outcome,
-      users:
-        outcome.id === winningOutcome.id ? Math.floor(Math.random() * 100) : 0,
-      channel_points:
-        outcome.id === winningOutcome.id ? Math.floor(Math.random() * 5000) : 0,
+      top_predictors:
+        outcome.id === winningOutcome.id
+          ? generateTopPredictors(10, true)
+          : generateTopPredictors(10),
     })
   )
 
-  logMock('Mock prediction resolved', winningOutcome)
-  res.json({
-    message: 'Mock prediction resolved',
-    winningOutcome,
-  })
+  logMock('Mock prediction resolved')
+  res.json({ message: 'Mock prediction resolved' })
 }
 
 // Only for development purposes
