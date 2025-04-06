@@ -1,10 +1,11 @@
-type LogType = 'info' | 'success' | 'warn' | 'error'
+type LogType = 'info' | 'success' | 'warn' | 'error' | 'mock'
 
 const colors: Record<LogType, string> = {
   info: '\x1b[34m',
   success: '\x1b[32m',
   warn: '\x1b[33m',
   error: '\x1b[31m',
+  mock: '\x1b[35m',
 }
 
 const labels: Record<LogType, string> = {
@@ -12,6 +13,7 @@ const labels: Record<LogType, string> = {
   success: 'SUCCESS',
   warn: 'WARN',
   error: 'ERROR',
+  mock: 'MOCK',
 }
 
 const getTimestamp = (): string => {
@@ -52,3 +54,5 @@ export const logWarn = (message: string, ...params: any[]) =>
   log('warn', message, ...params)
 export const logError = (message: string, ...params: any[]) =>
   log('error', message, ...params)
+export const logMock = (message: string, ...params: any[]) =>
+  log('mock', message, ...params)

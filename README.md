@@ -37,6 +37,7 @@ You can watch a basic showcase of the current project [here](https://www.youtube
    - Fill in the required values:
      - `TWITCH_CLIENT_ID` and `TWITCH_CLIENT_SECRET` from your Twitch developer app.
      - `TWITCH_REDIRECT_URI` for the OAuth callback (e.g., `http://localhost:8080/auth/callback`).
+     - Set `NODE_ENV` to development in order to enable mocking predictions.
 
 4. Start the application:
 

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Mock Predictions</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 2rem;
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+        }
+
+        button {
+            margin: 0.3rem;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🧪 Mock Predictions Panel</h1>
+
+    <div id="mockButtons" class="section"></div>
+    <br>
+    <div id="actionButtons" class="section"></div>
+    <br>
+    <button onclick="loadPrediction()">🔄 Reload Prediction</button>
+    <h2>📦 Current Mock Prediction</h2>
+    <pre id="predictionJson">Loading...</pre>
+
+    <script>
+        const mockButtons = document.getElementById('mockButtons');
+        const actionButtons = document.getElementById('actionButtons');
+        const predictionJson = document.getElementById('predictionJson');
+
+        const outcomes = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+        outcomes.forEach(num => {
+            const btn = document.createElement('button');
+            btn.textContent = `Mock ${num} outcome${num > 1 ? 's' : ''}`;
+            btn.onclick = () => fetch(`/mock-predictions/create/${num}`, { method: 'POST' });
+            mockButtons.appendChild(btn);
+        });
+
+        const actions = [
+            { label: 'Lock Prediction', endpoint: '/mock-predictions/lock', method: 'POST' },
+            { label: 'Cancel Prediction', endpoint: '/mock-predictions/cancel', method: 'POST' },
+            { label: 'Resolve Prediction', endpoint: '/mock-predictions/resolve', method: 'POST' },
+            { label: 'Reset Prediction (only for dev)', endpoint: '/mock-predictions/reset', method: 'DELETE' },
+        ];
+
+        actions.forEach(({ label, endpoint, method }) => {
+            const btn = document.createElement('button');
+            btn.textContent = label;
+            btn.onclick = () => fetch(endpoint, { method });
+            actionButtons.appendChild(btn);
+        });
+
+        async function loadPrediction() {
+            try {
+                const res = await fetch('/mock-predictions/');
+                const json = await res.json();
+                predictionJson.textContent = JSON.stringify(json, null, 2);
+            } catch (e) {
+                predictionJson.textContent = 'Error fetching prediction.';
+            }
+        }
+
+        const result = loadPrediction();
+    </script>
+</body>
+
+</html>
