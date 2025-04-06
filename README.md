@@ -32,9 +32,6 @@ This project allows integration with Twitch's prediction system using WebSockets
 3. Set up your `.env` file:
 
    - Copy `.env.example` to `.env`:
-     ```bash
-     cp .env.example .env
-     ```
    - Fill in the required values:
      - `TWITCH_CLIENT_ID` and `TWITCH_CLIENT_SECRET` from your Twitch developer app.
      - `TWITCH_REDIRECT_URI` for the OAuth callback (e.g., `http://localhost:8080/auth/callback`).
@@ -42,7 +39,7 @@ This project allows integration with Twitch's prediction system using WebSockets
 4. Start the application:
 
    ```bash
-   npm start
+   npm run dev
    ```
 
    The app will start on `http://localhost:8080`.
