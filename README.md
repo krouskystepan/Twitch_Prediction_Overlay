@@ -2,6 +2,8 @@
 
 This project allows integration with Twitch's prediction system using WebSockets. It listens to prediction events on Twitch and provides an API to interact with them. It's built with TypeScript and Express.js.
 
+You can watch a basic showcase of the current project [here](https://www.youtube.com/watch?v=vebrzaPPwVA).
+
 ## Features
 
 - WebSocket integration with Twitch to listen to prediction events (`channel.prediction.begin`, `channel.prediction.lock`, `channel.prediction.end`).
@@ -10,8 +12,8 @@ This project allows integration with Twitch's prediction system using WebSockets
 
 ## Requirements
 
-- Node.js >= 14.x
-- npm (or yarn) for managing dependencies
+- Node.js
+- npm for managing dependencies
 - A Twitch Developer account to create an application and get the required credentials
 
 ## Installation
@@ -19,8 +21,8 @@ This project allows integration with Twitch's prediction system using WebSockets
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/twitch-predictions.git
-   cd twitch-predictions
+   git clone https://github.com/yourusername/Twitch_Prediction_Overlay
+   cd Twitch_Prediction_Overlay
    ```
 
 2. Install the dependencies:

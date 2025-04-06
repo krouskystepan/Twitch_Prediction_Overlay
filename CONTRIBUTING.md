@@ -12,8 +12,8 @@ Thank you for your interest in contributing to this project! By participating, y
 
    - Clone your fork to your local machine:
      ```bash
-     git clone https://github.com/yourusername/twitch-predictions.git
-     cd twitch-predictions
+     git clone https://github.com/yourusername/Twitch_Prediction_Overlay
+     cd Twitch_Prediction_Overlay
      ```
 
 3. **Create a new branch**:
