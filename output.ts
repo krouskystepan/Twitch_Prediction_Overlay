@@ -1,4 +1,6 @@
-const PREDICTION_IN_TIME = {
+// https://dev.twitch.tv/docs/api/reference/#get-predictions
+
+const PREDICTION_ACTIVE = {
   data: [
     {
       id: '6c0510d2-f925-48c8-9504-4ee4d71dc67f',
