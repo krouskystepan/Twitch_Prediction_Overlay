@@ -1,24 +1,19 @@
-import dotenv from 'dotenv'
-dotenv.config()
-
-import { Request, Response } from 'express'
+import { NextRequest, NextResponse } from 'next/server'
 import axios from 'axios'
-import { startEventSubSession } from '../services/twitchSocket'
-import { setUserSession } from '../services/sessionStore'
-import { logError, logSuccess } from '../utils/logger'
+import { setUserSession } from '@/services/sessionStore'
+import { startEventSubSession } from '@/services/twitchSocket'
+import { logError, logSuccess } from '@/utils/logger'
 
-export const login = (req: Request, res: Response): void => {
-  const authorizationUrl = `https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=${process.env.TWITCH_CLIENT_ID}&redirect_uri=${process.env.TWITCH_REDIRECT_URI}&scope=channel:read:predictions`
-  res.redirect(authorizationUrl)
-}
-
-export const callback = async (req: Request, res: Response): Promise<void> => {
-  const code = req.query.code as string
+export async function GET(req: NextRequest) {
+  const url = new URL(req.url)
+  const code = url.searchParams.get('code')
 
   if (!code) {
     logError('No code found in the URL')
-    res.status(400).send('No code found in the URL')
-    return
+    return NextResponse.json(
+      { error: 'No code found in the URL' },
+      { status: 400 }
+    )
   }
 
   try {
@@ -29,7 +24,7 @@ export const callback = async (req: Request, res: Response): Promise<void> => {
         params: {
           client_id: process.env.TWITCH_CLIENT_ID,
           client_secret: process.env.TWITCH_CLIENT_SECRET,
-          code: code,
+          code,
           grant_type: 'authorization_code',
           redirect_uri: process.env.TWITCH_REDIRECT_URI,
         },
@@ -55,9 +50,15 @@ export const callback = async (req: Request, res: Response): Promise<void> => {
     startEventSubSession(token, broadcasterId)
 
     logSuccess(`Authorization successful for ${displayName} (${broadcasterId})`)
-    res.redirect('/predictions/' + login)
-  } catch (error: any) {
+
+    const redirectUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/api/predictions/${login}`
+    return NextResponse.redirect(redirectUrl)
+  } catch (error) {
     logError('Error getting the access token')
-    res.status(500).send('Error getting the access token')
+    console.log(error)
+    return NextResponse.json(
+      { error: 'Error getting the access token' },
+      { status: 500 }
+    )
   }
 }

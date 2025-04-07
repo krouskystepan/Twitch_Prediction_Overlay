@@ -1,25 +1,29 @@
-import { Request, Response } from 'express'
+import { NextRequest, NextResponse } from 'next/server'
 import axios from 'axios'
-import { getUserSession } from '../services/sessionStore'
-import { logError, logInfo } from '../utils/logger'
+import { getUserSession } from '@/services/sessionStore'
+import { logError, logInfo } from '@/utils/logger'
 
-export const getPredictions = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const channelName = req.params.channelName as string
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { channelName: string } }
+) {
+  const { channelName } = params
 
   if (!channelName) {
     logError('CHANNEL_NAME not provided in request')
-    res.status(400).send('CHANNEL_NAME is required in the request')
-    return
+    return NextResponse.json(
+      { error: 'CHANNEL_NAME is required in the request' },
+      { status: 400 }
+    )
   }
 
   const session = getUserSession(channelName)
   if (!session) {
     logError('User session not found')
-    res.status(401).send('User is not authenticated')
-    return
+    return NextResponse.json(
+      { error: 'User is not authenticated' },
+      { status: 401 }
+    )
   }
 
   const { token, broadcasterId } = session
@@ -27,8 +31,10 @@ export const getPredictions = async (
 
   if (!clientId) {
     logError('TWITCH_CLIENT_ID not set in environment variables')
-    res.status(500).send('TWITCH_CLIENT_ID not set')
-    return
+    return NextResponse.json(
+      { error: 'TWITCH_CLIENT_ID not set' },
+      { status: 500 }
+    )
   }
 
   try {
@@ -36,7 +42,7 @@ export const getPredictions = async (
       'https://api.twitch.tv/helix/predictions',
       {
         headers: {
-          'Client-ID': clientId!,
+          'Client-ID': clientId,
           Authorization: `Bearer ${token}`,
         },
         params: {
@@ -46,9 +52,12 @@ export const getPredictions = async (
     )
 
     logInfo(`Successfully fetched predictions for broadcaster ${broadcasterId}`)
-    res.json(predictionsResponse.data)
+    return NextResponse.json(predictionsResponse.data)
   } catch (error) {
     logError('Error fetching predictions', error)
-    res.status(500).send('Error fetching predictions')
+    return NextResponse.json(
+      { error: 'Error fetching predictions' },
+      { status: 500 }
+    )
   }
 }

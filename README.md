@@ -1,8 +1,6 @@
 # Twitch Predictions WebSocket Integration
 
-This project allows integration with Twitch's prediction system using WebSockets. It listens to prediction events on Twitch and provides an API to interact with them. It's built with TypeScript and Express.js.
-
-You can watch a basic showcase of the current project [here](https://www.youtube.com/watch?v=vebrzaPPwVA).
+This project allows integration with Twitch's prediction system using WebSockets. It listens to prediction events on Twitch and provides an API to interact with them. It's built with Next.js.
 
 ## Features
 
@@ -12,7 +10,6 @@ You can watch a basic showcase of the current project [here](https://www.youtube
 
 ## Requirements
 
-- Node.js
 - npm for managing dependencies
 - A Twitch Developer account to create an application and get the required credentials
 
@@ -36,8 +33,7 @@ You can watch a basic showcase of the current project [here](https://www.youtube
    - Copy `.env.example` to `.env`:
    - Fill in the required values:
      - `TWITCH_CLIENT_ID` and `TWITCH_CLIENT_SECRET` from your Twitch developer app.
-     - `TWITCH_REDIRECT_URI` for the OAuth callback (e.g., `http://localhost:8080/auth/callback`).
-     - Set `NODE_ENV` to development in order to enable mocking predictions.
+     - `TWITCH_REDIRECT_URI` for the OAuth callback (e.g., `http://localhost:3000/auth/callback`).
 
 4. Start the application:
 
@@ -45,22 +41,23 @@ You can watch a basic showcase of the current project [here](https://www.youtube
    npm run dev
    ```
 
-   The app will start on `http://localhost:8080`.
+   The app will start on `http://localhost:3000`.
 
 ## Usage
 
 - Go to `/auth/login` to log in with your Twitch account and authorize the application.
+- In `/dev` endpoint you can mock predictions. So you can develop without Twitch Affiliate
 - After successful login, the app will redirect to `/predictions/{channelName}` where you can view the predictions for that channel.
 
 ## Endpoints
 
-- **GET `/auth/login`**: Redirects to Twitch for login and OAuth authorization.
-- **GET `/auth/callback`**: Callback URL for Twitch OAuth, receives the authorization code and exchanges it for a token.
-- **GET `/predictions/{channelName}`**: Fetches the current predictions for a specific channel.
+- **GET `/api/auth/login`**: Redirects to Twitch for login and OAuth authorization.
+- **GET `/api/auth/callback`**: Callback URL for Twitch OAuth, receives the authorization code and exchanges it for a token.
+- **GET `/api/predictions/{channelName}`**: Fetches the current predictions for a specific channel.
 
 ## Contributing
 
-We welcome contributions from the community! If you would like to help improve this project, please follow the instructions in the [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
+We welcome contributions from the community! If you would like to help improve this project, please follow the instructions in the CONTRIBUTING.md (TBD) to get started.
 
 ## License
 
