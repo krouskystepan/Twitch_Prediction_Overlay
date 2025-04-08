@@ -1,10 +1,10 @@
+import { NextRequest, NextResponse } from 'next/server'
 import {
   getMockPrediction,
   setMockPrediction,
 } from '@/services/mockPredictionsStore'
 import { logMock } from '@/utils/logger'
 import { generateTopPredictors } from '@/utils/mockPredictionUtils'
-import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
   const currentPrediction = getMockPrediction()

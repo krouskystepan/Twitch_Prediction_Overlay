@@ -40,8 +40,8 @@ const log = (type: LogType, message: string, ...optionalParams: any[]) => {
     type === 'error'
       ? console.error
       : type === 'warn'
-      ? console.warn
-      : console.log
+        ? console.warn
+        : console.log
 
   logger(formatted, ...optionalParams)
 }

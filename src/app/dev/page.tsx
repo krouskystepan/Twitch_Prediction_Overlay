@@ -1,7 +1,7 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useState, useEffect } from 'react'
 
 const DevPage = () => {
   const [prediction, setPrediction] = useState<string>('No predictions yet')
@@ -49,7 +49,7 @@ const DevPage = () => {
   }, [])
 
   return (
-    <section className="p-8 flex flex-col gap-4">
+    <section className="flex flex-col gap-4 p-8">
       <div className="space-y-2">
         <h1 className="text-4xl font-bold">🧪 Mock Predictions Panel</h1>
         <p className="text-xl font-semibold">
@@ -78,7 +78,7 @@ const DevPage = () => {
                   }
                 }
               }}
-              className="cursor-pointer border px-4 py-2 rounded-lg bg-purple-300 duration-200 transition-colors hover:bg-purple-400"
+              className="cursor-pointer rounded-lg border bg-purple-300 px-4 py-2 transition-colors duration-200 hover:bg-purple-400"
             >
               Mock {num} outcome{num > 1 ? 's' : ''}
             </button>
@@ -107,7 +107,7 @@ const DevPage = () => {
                   }
                 }
               }}
-              className={`cursor-pointer border px-4 py-2 rounded-lg duration-200 transition-colors ${customClassName}`}
+              className={`cursor-pointer rounded-lg border px-4 py-2 transition-colors duration-200 ${customClassName}`}
             >
               {label}
             </button>
@@ -120,7 +120,7 @@ const DevPage = () => {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={loadPrediction}
-            className="cursor-pointer border px-4 py-2 rounded-lg duration-200 transition-colors bg-blue-200 hover:bg-blue-400"
+            className="cursor-pointer rounded-lg border bg-blue-200 px-4 py-2 transition-colors duration-200 hover:bg-blue-400"
           >
             🔄 Force Reload Prediction
           </button>
@@ -140,7 +140,7 @@ const DevPage = () => {
                 }
               }
             }}
-            className="cursor-pointer border px-4 py-2 rounded-lg duration-200 transition-colors bg-yellow-200 hover:bg-yellow-400"
+            className="cursor-pointer rounded-lg border bg-yellow-200 px-4 py-2 transition-colors duration-200 hover:bg-yellow-400"
           >
             ❌ Reset Predictions
           </button>
@@ -152,12 +152,12 @@ const DevPage = () => {
         <p className="text-gray-500">
           Error:{' '}
           {error ? (
-            <span className="text-red-500 font-semibold">{error}</span>
+            <span className="font-semibold text-red-500">{error}</span>
           ) : (
-            <span className="text-green-500 font-semibold">No Errors</span>
+            <span className="font-semibold text-green-500">No Errors</span>
           )}
         </p>
-        <pre className="overflow-x-auto bg-gray-200 p-4 rounded-lg text-gray-800 ">
+        <pre className="overflow-x-auto rounded-lg bg-gray-200 p-4 text-gray-800">
           {prediction}
         </pre>
       </div>

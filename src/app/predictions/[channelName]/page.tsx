@@ -10,7 +10,7 @@ const OverlayDefaultPage = async ({
   const { channelName } = await params
 
   return (
-    <h4 className="text-2xl text-black p-4">
+    <h4 className="p-4 text-2xl text-black">
       Go to link{' '}
       <Link
         href={`/predictions/${channelName}/overlay`}

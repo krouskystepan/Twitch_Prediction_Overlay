@@ -8,14 +8,14 @@ const Home = () => {
       <div className="flex gap-4">
         <Link
           href="/api/auth/login"
-          className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded"
+          className="rounded bg-purple-600 px-4 py-2 font-semibold text-white hover:bg-purple-700"
         >
           Login with Twitch
         </Link>
 
         <Link
           href="/dev"
-          className="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded"
+          className="rounded bg-gray-800 px-4 py-2 font-semibold text-white hover:bg-gray-900"
         >
           Developer Panel
         </Link>

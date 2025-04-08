@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import axios from 'axios'
 import { setUserSession } from '@/services/sessionStore'
 import { startEventSubSession } from '@/services/twitchSocket'
 import { logError, logSuccess } from '@/utils/logger'
+import axios from 'axios'
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url)

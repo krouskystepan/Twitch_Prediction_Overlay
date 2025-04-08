@@ -1,3 +1,4 @@
+import { NextRequest, NextResponse } from 'next/server'
 import { Prediction } from '@/constants/types'
 import {
   getMockPrediction,
@@ -5,7 +6,6 @@ import {
 } from '@/services/mockPredictionsStore'
 import { logMock } from '@/utils/logger'
 import { generateOutcomes } from '@/utils/mockPredictionUtils'
-import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
   const body = await req.json()
