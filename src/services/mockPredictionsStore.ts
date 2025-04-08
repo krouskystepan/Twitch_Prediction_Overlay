@@ -1,4 +1,4 @@
-import { Prediction } from '@/constants/types'
+import { Prediction } from '@/types/types'
 
 export let currentMockPrediction: Prediction | null = null
 

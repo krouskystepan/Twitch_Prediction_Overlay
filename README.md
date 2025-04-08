@@ -31,9 +31,7 @@ This project allows integration with Twitch's prediction system using WebSockets
 3. Set up your `.env` file:
 
    - Copy `.env.example` to `.env`:
-   - Fill in the required values:
-     - `TWITCH_CLIENT_ID` and `TWITCH_CLIENT_SECRET` from your Twitch developer app.
-     - `TWITCH_REDIRECT_URI` for the OAuth callback (e.g., `http://localhost:3000/auth/callback`).
+   - Fill in the required values
 
 4. Start the application:
 
@@ -42,18 +40,6 @@ This project allows integration with Twitch's prediction system using WebSockets
    ```
 
    The app will start on `http://localhost:3000`.
-
-## Usage
-
-- Go to `/auth/login` to log in with your Twitch account and authorize the application.
-- In `/dev` endpoint you can mock predictions. So you can develop without Twitch Affiliate
-- After successful login, the app will redirect to `/predictions/{channelName}` where you can view the predictions for that channel.
-
-## Endpoints
-
-- **GET `/api/auth/login`**: Redirects to Twitch for login and OAuth authorization.
-- **GET `/api/auth/callback`**: Callback URL for Twitch OAuth, receives the authorization code and exchanges it for a token.
-- **GET `/api/predictions/{channelName}`**: Fetches the current predictions for a specific channel.
 
 ## Contributing
 

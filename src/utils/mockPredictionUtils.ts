@@ -1,4 +1,4 @@
-import { Outcome, TopPredictor } from '@/constants/types'
+import { Outcome, TopPredictor } from '@/types/types'
 
 export const generateOutcomes = (count: number): Outcome[] => {
   return Array.from({ length: count }, (_, i) => ({
