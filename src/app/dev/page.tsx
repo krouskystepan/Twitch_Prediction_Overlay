@@ -3,13 +3,9 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
-export default function DevPage() {
+const DevPage = () => {
   const [prediction, setPrediction] = useState<string>('No predictions yet')
   const [error, setError] = useState('')
-
-  useEffect(() => {
-    loadPrediction()
-  }, [])
 
   const outcomes = [2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -48,6 +44,10 @@ export default function DevPage() {
     }
   }
 
+  useEffect(() => {
+    loadPrediction()
+  }, [])
+
   return (
     <section className="p-8 flex flex-col gap-4">
       <div className="space-y-2">
@@ -78,7 +78,7 @@ export default function DevPage() {
                   }
                 }
               }}
-              className="cursor-pointer border px-4 py-2 border-neutral-400 rounded-lg bg-neutral-100 duration-200 transition-colors hover:bg-neutral-200"
+              className="cursor-pointer border px-4 py-2 rounded-lg bg-purple-300 duration-200 transition-colors hover:bg-purple-400"
             >
               Mock {num} outcome{num > 1 ? 's' : ''}
             </button>
@@ -164,3 +164,5 @@ export default function DevPage() {
     </section>
   )
 }
+
+export default DevPage

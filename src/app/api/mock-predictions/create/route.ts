@@ -1,4 +1,4 @@
-import { MockPrediction } from '@/constants/types'
+import { Prediction } from '@/constants/types'
 import {
   getMockPrediction,
   setMockPrediction,
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const newPrediction: MockPrediction = {
+  const newPrediction: Prediction = {
     id: `mock-${Date.now()}`,
     broadcaster_id: '123456',
     broadcaster_name: 'MockStreamer',

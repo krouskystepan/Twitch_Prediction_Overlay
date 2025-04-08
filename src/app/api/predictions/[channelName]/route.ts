@@ -1,21 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import axios from 'axios'
 import { getUserSession } from '@/services/sessionStore'
-import { logError, logInfo } from '@/utils/logger'
+import { logError } from '@/utils/logger'
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { channelName: string } }
+  { params }: { params: Promise<{ channelName: string }> }
 ) {
-  const { channelName } = params
-
-  if (!channelName) {
-    logError('CHANNEL_NAME not provided in request')
-    return NextResponse.json(
-      { error: 'CHANNEL_NAME is required in the request' },
-      { status: 400 }
-    )
-  }
+  const { channelName } = await params
 
   const session = getUserSession(channelName)
   if (!session) {
@@ -51,7 +43,6 @@ export async function GET(
       }
     )
 
-    logInfo(`Successfully fetched predictions for broadcaster ${broadcasterId}`)
     return NextResponse.json(predictionsResponse.data)
   } catch (error) {
     logError('Error fetching predictions', error)

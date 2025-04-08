@@ -1,6 +1,7 @@
 import WebSocket from 'ws'
 import axios from 'axios'
 import { logError, logInfo, logSuccess, logWarn } from '../utils/logger'
+import { broadcastToFrontend } from './websocketServer'
 
 const TWITCH_WS_URL = 'wss://eventsub.wss.twitch.tv/ws'
 
@@ -61,7 +62,7 @@ export const startEventSubSession = (
 
       case 'session_keepalive': {
         keepAliveCount++
-        if (keepAliveCount % 6 === 0) {
+        if (keepAliveCount % 30 === 0) {
           logInfo('Keepalive received from Twitch.')
         }
         break
@@ -79,6 +80,8 @@ export const startEventSubSession = (
       case 'notification': {
         const { subscription_type } = msg.metadata
         const { event } = msg.payload
+
+        broadcastToFrontend({ type: subscription_type, event })
 
         switch (subscription_type) {
           case 'channel.prediction.begin':

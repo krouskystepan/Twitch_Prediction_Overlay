@@ -1,11 +1,10 @@
-import { MockPrediction } from '@/constants/types'
+import { Prediction } from '@/constants/types'
 
-let currentMockPrediction: MockPrediction | null = null
+export let currentMockPrediction: Prediction | null = null
 
-export const getMockPrediction = (): MockPrediction | null =>
-  currentMockPrediction
+export const getMockPrediction = (): Prediction | null => currentMockPrediction
 
-export const setMockPrediction = (prediction: MockPrediction): void => {
+export const setMockPrediction = (prediction: Prediction): void => {
   currentMockPrediction = prediction
 }
 

@@ -55,7 +55,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   } catch (error) {
     logError('Error getting the access token')
-    console.log(error)
     return NextResponse.json(
       { error: 'Error getting the access token' },
       { status: 500 }
