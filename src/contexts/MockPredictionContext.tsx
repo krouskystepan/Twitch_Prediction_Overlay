@@ -63,9 +63,14 @@ export const MockPredictionProvider: React.FC<{
       throw new Error('No prediction to cancel')
     }
 
-    if (prediction.status !== 'ACTIVE') {
-      logMock('Prediction is not active')
-      throw new Error('Prediction is not active')
+    if (prediction.status === 'RESOLVED') {
+      logMock('Prediction is already resolved')
+      throw new Error('Prediction is already resolved')
+    }
+
+    if (prediction.status === 'CANCELED') {
+      logMock('Prediction is already canceled')
+      throw new Error('Prediction is already canceled')
     }
 
     logMock('Canceling prediction')
@@ -82,9 +87,14 @@ export const MockPredictionProvider: React.FC<{
       throw new Error('No prediction to lock')
     }
 
-    if (prediction.status !== 'ACTIVE') {
-      logMock('Prediction is not active')
-      throw new Error('Prediction is not active')
+    if (prediction.status === 'RESOLVED') {
+      logMock('Prediction is already resolved')
+      throw new Error('Prediction is already resolved')
+    }
+
+    if (prediction.status === 'LOCKED') {
+      logMock('Prediction is already locked')
+      throw new Error('Prediction is already locked')
     }
 
     logMock('Locking prediction')
@@ -99,6 +109,16 @@ export const MockPredictionProvider: React.FC<{
     if (!prediction) {
       logMock('No prediction to resolve')
       throw new Error('No prediction to resolve')
+    }
+
+    if (prediction.status === 'RESOLVED') {
+      logMock('Prediction is already resolved')
+      throw new Error('Prediction is already resolved')
+    }
+
+    if (prediction.status === 'CANCELED') {
+      logMock('Prediction is canceled')
+      throw new Error('Prediction is canceled')
     }
 
     if (prediction.status !== 'LOCKED') {
