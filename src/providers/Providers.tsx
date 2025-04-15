@@ -1,5 +1,6 @@
 'use client'
 
+import { MockPredictionProvider } from '@/contexts/MockPredictionContext'
 import type { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 
@@ -10,7 +11,11 @@ const Providers = ({
   children: React.ReactNode
   session?: Session | null
 }) => {
-  return <SessionProvider session={session}>{children}</SessionProvider>
+  return (
+    <SessionProvider session={session}>
+      <MockPredictionProvider>{children}</MockPredictionProvider>
+    </SessionProvider>
+  )
 }
 
 export default Providers

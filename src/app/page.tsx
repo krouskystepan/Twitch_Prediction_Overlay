@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 
+import { Button } from '@/components/ui/button'
 import AuthButtons from '@/components/AuthButtons'
 
 import { authOptions } from './api/auth/[...nextauth]/route'
@@ -17,11 +18,14 @@ const Home = async () => {
       <div className="flex gap-4">
         <AuthButtons session={session} />
 
-        <Link
-          href="/dev"
-          className="rounded bg-gray-800 px-4 py-2 font-semibold text-white hover:bg-gray-900"
-        >
-          Developer Panel
+        <Link href="/dev">
+          <Button
+            variant="default"
+            size="lg"
+            className="py-4 text-base font-semibold"
+          >
+            Developer Panel
+          </Button>
         </Link>
       </div>
     </main>

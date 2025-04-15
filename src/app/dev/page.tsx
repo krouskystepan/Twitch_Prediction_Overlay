@@ -1,52 +1,52 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useState } from 'react'
+import { useMockPrediction } from '@/contexts/MockPredictionContext'
+
+import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import Overlays from '@/components/predictionsOutcomes/Overlays'
 
 const DevPage = () => {
-  const [prediction, setPrediction] = useState<string>('No predictions yet')
-  const [error, setError] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [time, setTime] = useState(30)
+
+  const {
+    prediction,
+    createPrediction,
+    cancelPrediction,
+    lockPrediction,
+    resolvePrediction,
+    resetPrediction,
+  } = useMockPrediction()
 
   const outcomes = [2, 3, 4, 5, 6, 7, 8, 9, 10]
 
   const dataActions = [
     {
       label: 'Lock Prediction',
-      endpoint: 'api/mock-predictions/lock',
-      method: 'POST',
-      customClassName: 'bg-neutral-300 hover:bg-neutral-400',
+      fce: lockPrediction,
+      variant: 'default',
     },
     {
       label: 'Cancel Prediction',
-      endpoint: 'api/mock-predictions/cancel',
-      method: 'POST',
-      customClassName: 'bg-red-200 hover:bg-red-300',
+      fce: cancelPrediction,
+      variant: 'destructive',
     },
     {
       label: 'Resolve Prediction',
-      endpoint: 'api/mock-predictions/resolve',
-      method: 'POST',
-      customClassName: 'bg-green-200 hover:bg-green-300',
+      fce: resolvePrediction,
+      variant: 'success',
     },
   ]
-
-  const loadPrediction = async () => {
-    try {
-      const res = await axios.get('/api/mock-predictions')
-      setPrediction(JSON.stringify(res.data, null, 2))
-      setError('')
-    } catch (e: unknown) {
-      if (axios.isAxiosError(e) && e.response?.data?.message) {
-        setError(e.response.data.message)
-      } else {
-        setError('An unknown error occurred')
-      }
-    }
-  }
-
-  useEffect(() => {
-    loadPrediction()
-  }, [])
 
   return (
     <section className="flex flex-col gap-4 p-8">
@@ -62,88 +62,107 @@ const DevPage = () => {
         <h2 className="text-2xl font-bold">Data Mock Buttons</h2>
         <div className="flex flex-wrap gap-2">
           {outcomes.map((num) => (
-            <button
+            <Button
+              variant={'outline'}
               key={num}
               onClick={async () => {
                 try {
-                  await axios.post('/api/mock-predictions/create', {
-                    outcomeCount: num,
-                  })
-                  loadPrediction()
+                  createPrediction(num, time)
+                  setError(null)
                 } catch (e) {
-                  if (axios.isAxiosError(e) && e.response?.data?.message) {
-                    setError(e.response.data.message)
+                  console.log(e)
+                  if (e instanceof Error) {
+                    setError(e.message)
                   } else {
                     setError('An unknown error occurred')
                   }
                 }
               }}
-              className="cursor-pointer rounded-lg border bg-purple-300 px-4 py-2 transition-colors duration-200 hover:bg-purple-400"
             >
               Mock {num} outcome{num > 1 ? 's' : ''}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
 
-      <div className="space-y-2">
-        <h2 className="text-2xl font-bold">Data Actions Buttons</h2>
-        <div className="flex flex-wrap gap-2">
-          {dataActions.map(({ label, endpoint, method, customClassName }) => (
-            <button
-              key={label}
-              onClick={async () => {
+      <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+        <div className="space-y-2">
+          <h2 className="text-2xl font-bold">Data Actions Buttons</h2>
+          <div className="flex flex-wrap gap-2">
+            {dataActions.map(({ label, fce, variant }) => (
+              <Button
+                variant={variant as any}
+                key={label}
+                onClick={() => {
+                  try {
+                    fce()
+                    setError(null)
+                  } catch (error) {
+                    if (error instanceof Error) {
+                      setError(error.message)
+                    } else {
+                      setError('An unknown error occurred')
+                    }
+                  }
+                }}
+              >
+                {label}
+              </Button>
+            ))}
+          </div>
+
+          <h2 className="text-2xl font-bold">Dev Buttons</h2>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              onClick={() => {
                 try {
-                  await axios(endpoint, { method })
-                  loadPrediction()
-                } catch (error) {
-                  if (
-                    axios.isAxiosError(error) &&
-                    error.response?.data?.message
-                  ) {
-                    setError(error.response.data.message)
+                  resetPrediction()
+                  setError(null)
+                } catch (e) {
+                  if (e instanceof Error) {
+                    setError(e.message)
                   } else {
                     setError('An unknown error occurred')
                   }
                 }
               }}
-              className={`cursor-pointer rounded-lg border px-4 py-2 transition-colors duration-200 ${customClassName}`}
+              className="bg-amber-300 text-black hover:bg-amber-300/90"
             >
-              {label}
-            </button>
-          ))}
-        </div>
-      </div>
+              ❌ Reset Predictions
+            </Button>
+            <Select
+              defaultValue="30"
+              onValueChange={(value) => setTime(Number(value))}
+            >
+              <SelectTrigger className="w-[80px]">
+                <SelectValue placeholder="Time" />
+              </SelectTrigger>
 
-      <div className="space-y-2">
-        <h2 className="text-2xl font-bold">Dev Buttons</h2>
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={loadPrediction}
-            className="cursor-pointer rounded-lg border bg-blue-200 px-4 py-2 transition-colors duration-200 hover:bg-blue-400"
-          >
-            🔄 Force Reload Prediction
-          </button>
-          <button
-            onClick={async () => {
-              try {
-                await axios.delete('/api/mock-predictions/reset')
-                setPrediction('No predictions yet')
-              } catch (error) {
-                if (
-                  axios.isAxiosError(error) &&
-                  error.response?.data?.message
-                ) {
-                  setError(error.response.data.message)
-                } else {
-                  setError('An unknown error occurred')
-                }
-              }
-            }}
-            className="cursor-pointer rounded-lg border bg-yellow-200 px-4 py-2 transition-colors duration-200 hover:bg-yellow-400"
-          >
-            ❌ Reset Predictions
-          </button>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Dev Values</SelectLabel>
+                  <SelectItem value="5">5s</SelectItem>
+                  <SelectItem value="10">10s</SelectItem>
+                  <SelectItem value="20">20s</SelectItem>
+                </SelectGroup>
+                <SelectGroup>
+                  <SelectLabel>Actual Values</SelectLabel>
+                  <SelectItem value="30">30s</SelectItem>
+                  <SelectItem value="60">1m</SelectItem>
+                  <SelectItem value="120">2m</SelectItem>
+                  <SelectItem value="300">5m</SelectItem>
+                  <SelectItem value="600">10m</SelectItem>
+                  <SelectItem value="900">15m</SelectItem>
+                  <SelectItem value="1200">20m</SelectItem>
+                  <SelectItem value="1800">30m</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <div className="relative h-40 w-md overflow-hidden border border-black">
+          <Overlays prediction={prediction} />
         </div>
       </div>
 
@@ -158,7 +177,9 @@ const DevPage = () => {
           )}
         </p>
         <pre className="overflow-x-auto rounded-lg bg-gray-200 p-4 text-gray-800">
-          {prediction}
+          {prediction
+            ? JSON.stringify(prediction, null, 2)
+            : 'No prediction available'}
         </pre>
       </div>
     </section>

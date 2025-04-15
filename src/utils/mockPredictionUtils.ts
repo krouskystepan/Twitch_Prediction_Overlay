@@ -3,9 +3,9 @@ import { Outcome, TopPredictor } from '@/types/types'
 export const generateOutcomes = (count: number): Outcome[] => {
   return Array.from({ length: count }, (_, i) => ({
     id: `outcome-${i + 1}`,
-    title: `Option ${i + 1}`,
-    users: Math.floor(Math.random() * 100),
-    channel_points: Math.floor(Math.random() * 5000),
+    title: `This is outcome number ${i + 1} of ${count}`,
+    users: Math.floor(Math.random() * 10_000),
+    channel_points: Math.floor(Math.random() * 50_000),
     top_predictors: null,
     color: count === 2 ? (i === 0 ? 'BLUE' : 'PINK') : 'BLUE',
   }))

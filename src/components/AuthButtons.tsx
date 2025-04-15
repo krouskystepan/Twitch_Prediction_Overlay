@@ -3,21 +3,27 @@
 import { Session } from 'next-auth'
 import { signIn, signOut } from 'next-auth/react'
 
+import { Button } from './ui/button'
+
 const AuthButtons = ({ session }: { session: Session | null }) => {
   return session ? (
-    <button
-      className="rounded bg-red-500 px-4 py-2 font-semibold text-white hover:bg-red-600"
+    <Button
       onClick={() => signOut()}
+      variant="destructive"
+      size="lg"
+      className="py-4 text-base font-semibold"
     >
       Log out
-    </button>
+    </Button>
   ) : (
-    <button
+    <Button
       onClick={() => signIn('twitch')}
-      className="rounded bg-purple-600 px-4 py-2 font-semibold text-white hover:bg-purple-700"
+      variant="twitch"
+      size="lg"
+      className="py-4 text-base font-semibold"
     >
       Login with Twitch
-    </button>
+    </Button>
   )
 }
 
