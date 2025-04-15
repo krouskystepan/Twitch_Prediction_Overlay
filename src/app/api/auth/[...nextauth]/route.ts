@@ -1,19 +1,7 @@
-import NextAuth, { AuthOptions } from 'next-auth'
-import TwitchProvider from 'next-auth/providers/twitch'
+import NextAuth from 'next-auth'
 
-const authOptions: AuthOptions = {
-  providers: [
-    TwitchProvider({
-      clientId: process.env.TWITCH_CLIENT_ID as string,
-      clientSecret: process.env.TWITCH_CLIENT_SECRET as string,
-    }),
-  ],
-  secret: process.env.NEXTAUTH_SECRET,
-  session: {
-    strategy: 'jwt',
-  },
-}
+import { authOptions } from '@/lib/authOptions'
 
 const handler = NextAuth(authOptions)
 
-export { handler as GET, handler as POST, authOptions }
+export { handler as GET, handler as POST }

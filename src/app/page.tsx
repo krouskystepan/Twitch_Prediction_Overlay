@@ -1,10 +1,9 @@
 import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 
+import { authOptions } from '@/lib/authOptions'
 import { Button } from '@/components/ui/button'
 import AuthButtons from '@/components/AuthButtons'
-
-import { authOptions } from './api/auth/[...nextauth]/route'
 
 const Home = async () => {
   const session = await getServerSession(authOptions)

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getUserSession } from '@/services/sessionStore'
-import { logError } from '@/utils/logger'
 import axios from 'axios'
+
+import { logError } from '@/lib/logger'
 
 export async function GET(
   req: NextRequest,

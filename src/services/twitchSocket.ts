@@ -1,7 +1,7 @@
 import axios from 'axios'
 import WebSocket from 'ws'
 
-import { logError, logInfo, logSuccess, logWarn } from '../utils/logger'
+import { logError, logInfo, logSuccess, logWarn } from '../lib/logger'
 import { broadcastToFrontend } from './websocketServer'
 
 const TWITCH_WS_URL = 'wss://eventsub.wss.twitch.tv/ws'

@@ -1,6 +1,11 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+import { Dices, Users } from 'lucide-react'
+import { RadialBar, RadialBarChart, ResponsiveContainer } from 'recharts'
+
+import { Prediction } from '@/types/types'
 import {
   calculateMultiplier,
   calculatePercentage,
@@ -8,12 +13,7 @@ import {
   formatNumberToReadableString,
   formatNumberWithSpaces,
   getStatusText,
-} from '@/utils/utils'
-import { motion } from 'framer-motion'
-import { Dices, Users } from 'lucide-react'
-import { RadialBar, RadialBarChart, ResponsiveContainer } from 'recharts'
-
-import { Prediction } from '@/types/types'
+} from '@/lib/utils'
 import { ChartContainer } from '@/components/ui/chart'
 
 import ChannelPoints from '../customIcons/ChannelPoints'

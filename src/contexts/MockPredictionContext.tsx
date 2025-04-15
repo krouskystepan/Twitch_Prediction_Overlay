@@ -1,13 +1,13 @@
 'use client'
 
 import React, { createContext, useContext, useState } from 'react'
-import { logMock } from '@/utils/logger'
+
+import { Prediction } from '@/types/types'
+import { logMock } from '@/lib/logger'
 import {
   generateOutcomes,
   generateTopPredictors,
-} from '@/utils/mockPredictionUtils'
-
-import { Prediction } from '@/types/types'
+} from '@/lib/mockPredictionUtils'
 
 type MockPredictionContextType = {
   prediction: Prediction | null

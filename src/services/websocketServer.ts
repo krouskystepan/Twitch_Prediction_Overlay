@@ -1,5 +1,6 @@
-import { logInfo } from '@/utils/logger'
 import { WebSocket, WebSocketServer } from 'ws'
+
+import { logInfo } from '@/lib/logger'
 
 let frontendWss: WebSocketServer | null = null
 const connectedClients: WebSocket[] = []
