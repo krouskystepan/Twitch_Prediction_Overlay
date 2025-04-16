@@ -9,6 +9,7 @@ import TwoOutcomes from '@/components/predictionsOutcomes/TwoOutcomes'
 const OverlayPage = () => {
   const [prediction, setPrediction] = useState<Prediction | null>(null)
 
+  //TODO: When active refetch data every XX seconds
   useEffect(() => {
     const ws = new WebSocket('ws://localhost:8080')
 

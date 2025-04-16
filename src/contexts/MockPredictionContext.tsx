@@ -12,6 +12,7 @@ import {
 type MockPredictionContextType = {
   prediction: Prediction | null
   createPrediction: (outcomeCount: number, time: number) => void
+  updatePrediction: (magnitude: number) => void
   cancelPrediction: () => void
   lockPrediction: () => void
   resolvePrediction: () => void
@@ -45,7 +46,7 @@ export const MockPredictionProvider: React.FC<{
       broadcaster_login: 'mockstreamer',
       title: `This is mock Prediction with ${outcomeCount} outcomes`,
       winning_outcome_id: null,
-      outcomes: generateOutcomes(outcomeCount),
+      outcomes: generateOutcomes(outcomeCount, 1),
       prediction_window: time,
       status: 'ACTIVE',
       created_at: new Date().toISOString(),
@@ -54,6 +55,21 @@ export const MockPredictionProvider: React.FC<{
     }
 
     logMock('Creating new prediction')
+    setPrediction(newPrediction)
+  }
+
+  const updatePrediction = (magnitude: number) => {
+    if (!prediction) {
+      logMock('No prediction to update')
+      throw new Error('No prediction to update')
+    }
+
+    const newPrediction: Prediction = {
+      ...prediction,
+      outcomes: generateOutcomes(prediction.outcomes.length, magnitude),
+    }
+
+    logMock('Updating prediction')
     setPrediction(newPrediction)
   }
 
@@ -164,6 +180,7 @@ export const MockPredictionProvider: React.FC<{
       value={{
         prediction,
         createPrediction,
+        updatePrediction,
         cancelPrediction,
         lockPrediction,
         resolvePrediction,

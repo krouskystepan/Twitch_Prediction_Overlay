@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useMockPrediction } from '@/contexts/MockPredictionContext'
 
 import { Button } from '@/components/ui/button'
@@ -18,15 +18,38 @@ import Overlays from '@/components/predictionsOutcomes/Overlays'
 const DevPage = () => {
   const [error, setError] = useState<string | null>(null)
   const [time, setTime] = useState(30)
-
+  const counter = useRef(1)
   const {
     prediction,
     createPrediction,
+    updatePrediction,
     cancelPrediction,
     lockPrediction,
     resolvePrediction,
     resetPrediction,
   } = useMockPrediction()
+
+  useEffect(() => {
+    if (!prediction?.prediction_window || !prediction.created_at) return
+
+    const createdAt = new Date(prediction.created_at).getTime()
+    const totalMs = prediction.prediction_window * 1000
+
+    const interval = setInterval(() => {
+      const now = Date.now()
+      const elapsed = now - createdAt
+
+      updatePrediction(counter.current)
+      counter.current += 1
+
+      if (elapsed >= totalMs) {
+        clearInterval(interval)
+        return
+      }
+    }, 10_000)
+
+    return () => clearInterval(interval)
+  }, [prediction?.prediction_window, prediction?.created_at])
 
   const outcomes = [2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -141,7 +164,6 @@ const DevPage = () => {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Dev Values</SelectLabel>
-                  <SelectItem value="5">5s</SelectItem>
                   <SelectItem value="10">10s</SelectItem>
                   <SelectItem value="20">20s</SelectItem>
                 </SelectGroup>
