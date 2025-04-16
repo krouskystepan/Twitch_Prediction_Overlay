@@ -30,7 +30,7 @@ const TwoOutcomes = ({ prediction }: { prediction: Prediction }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (prediction.status === 'LOCKED' || timer.percent >= 100) {
+      if (prediction.status === 'LOCKED') {
         setTimer({
           secondsLeft: 0,
           percent: 100,
@@ -45,10 +45,12 @@ const TwoOutcomes = ({ prediction }: { prediction: Prediction }) => {
       const totalMs = prediction.prediction_window * 1000
       const elapsedMs = now - createdAt
       const secondsLeft = Math.max(Math.ceil((totalMs - elapsedMs) / 1000), 0)
+      const possiblePercent = Math.round((elapsedMs / totalMs) * 100)
+      const percent = Math.min(possiblePercent, 100)
 
       setTimer({
         secondsLeft,
-        percent: 100 - (secondsLeft / prediction.prediction_window) * 100,
+        percent,
       })
     }, 1000)
 
@@ -170,25 +172,21 @@ const TwoOutcomes = ({ prediction }: { prediction: Prediction }) => {
           </motion.div>
           {timer.percent ? (
             <motion.div
-              className="h-1/2 w-full origin-bottom rounded-t-full border-3 border-b-0 border-neutral-200 duration-1000"
-              style={{
-                rotate: `${((timer.percent - 100) / 100) * 180}deg`,
-              }}
+              className="h-1/2 w-full origin-bottom rounded-t-full border-3 border-b-0 border-neutral-200"
               initial={{
-                scale: 1.3,
                 opacity: 0,
+                rotate: -180,
               }}
               animate={{
-                scale: 1,
                 opacity: 1,
+                rotate: 0,
               }}
               transition={{
                 rotate: {
-                  duration: 1,
+                  duration: prediction.prediction_window,
                   ease: 'linear',
                 },
-                scale: { duration: 0.4 },
-                opacity: { duration: 0.8 },
+                opacity: { duration: 0.6 },
               }}
             />
           ) : null}
