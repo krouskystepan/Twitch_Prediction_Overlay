@@ -25,7 +25,7 @@ const ResolvedStats = ({
 }) => {
   return (
     <motion.div
-      className="absolute top-2 left-1/2 line-clamp-1 flex w-fit -translate-x-1/2 flex-col items-center justify-center text-xl font-semibold"
+      className="absolute top-3 left-1/2 line-clamp-1 flex w-fit -translate-x-1/2 flex-col items-center justify-center text-xl font-semibold"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
