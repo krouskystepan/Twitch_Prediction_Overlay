@@ -108,6 +108,11 @@ export const MockPredictionProvider: React.FC<{
       throw new Error('Prediction is already resolved')
     }
 
+    if (prediction.status === 'CANCELED') {
+      logMock('Prediction is canceled')
+      throw new Error('Prediction is canceled')
+    }
+
     if (prediction.status === 'LOCKED') {
       logMock('Prediction is already locked')
       throw new Error('Prediction is already locked')

@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import Overlays from '@/components/predictionsOutcomes/Overlays'
+import Overlays from '@/components/Overlays'
 
 const DevPage = () => {
   const [error, setError] = useState<string | null>(null)
@@ -31,6 +31,7 @@ const DevPage = () => {
 
   useEffect(() => {
     if (!prediction?.prediction_window || !prediction.created_at) return
+    if (prediction.status !== 'ACTIVE') return
 
     const createdAt = new Date(prediction.created_at).getTime()
     const totalMs = prediction.prediction_window * 1000
@@ -49,7 +50,12 @@ const DevPage = () => {
     }, 10_000)
 
     return () => clearInterval(interval)
-  }, [prediction?.prediction_window, prediction?.created_at])
+  }, [
+    prediction?.prediction_window,
+    prediction?.created_at,
+    prediction?.status,
+    updatePrediction,
+  ])
 
   const outcomes = [2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -69,7 +75,7 @@ const DevPage = () => {
       fce: resolvePrediction,
       variant: 'success',
     },
-  ]
+  ] as const
 
   return (
     <section className="flex flex-col gap-4 p-8">
@@ -114,7 +120,7 @@ const DevPage = () => {
           <div className="flex flex-wrap gap-2">
             {dataActions.map(({ label, fce, variant }) => (
               <Button
-                variant={variant as any}
+                variant={variant}
                 key={label}
                 onClick={() => {
                   try {

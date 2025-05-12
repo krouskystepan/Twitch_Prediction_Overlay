@@ -3,8 +3,7 @@
 import { useEffect, useState } from 'react'
 
 import { Prediction } from '@/types/types'
-import Overlays from '@/components/predictionsOutcomes/Overlays'
-import TwoOutcomes from '@/components/predictionsOutcomes/TwoOutcomes'
+import Overlays from '@/components/Overlays'
 
 const OverlayPage = () => {
   const [prediction, setPrediction] = useState<Prediction | null>(null)

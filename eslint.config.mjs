@@ -11,16 +11,21 @@ const compat = new FlatCompat({
 
 const baseConfig = compat.extends(
   'next/core-web-vitals',
-  'next/typescript',
-  'plugin:tailwindcss/recommended'
+  'next/typescript'
+  // 'plugin:tailwindcss/recommended'
 )
 
 const customRules = {
   rules: {
     'react/no-unescaped-entities': 'off',
+    'react-hooks/exhaustive-deps': 'warn',
   },
 }
 
-const eslintConfig = [...baseConfig, customRules]
+const filesToIgnore = {
+  ignores: ['node_modules/*', '.next/*', 'dist/*', 'coverage/*'],
+}
+
+const eslintConfig = [...baseConfig, customRules, filesToIgnore]
 
 export default eslintConfig

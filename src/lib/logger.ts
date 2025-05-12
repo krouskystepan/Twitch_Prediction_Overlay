@@ -28,7 +28,7 @@ const getTimestamp = (): string => {
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`
 }
 
-const log = (type: LogType, message: string, ...optionalParams: any[]) => {
+const log = (type: LogType, message: string, ...optionalParams: unknown[]) => {
   const color = colors[type]
   const label = labels[type]
   const timestamp = getTimestamp()
@@ -46,13 +46,13 @@ const log = (type: LogType, message: string, ...optionalParams: any[]) => {
   logger(formatted, ...optionalParams)
 }
 
-export const logInfo = (message: string, ...params: any[]) =>
+export const logInfo = (message: string, ...params: unknown[]) =>
   log('info', message, ...params)
-export const logSuccess = (message: string, ...params: any[]) =>
+export const logSuccess = (message: string, ...params: unknown[]) =>
   log('success', message, ...params)
-export const logWarn = (message: string, ...params: any[]) =>
+export const logWarn = (message: string, ...params: unknown[]) =>
   log('warn', message, ...params)
-export const logError = (message: string, ...params: any[]) =>
+export const logError = (message: string, ...params: unknown[]) =>
   log('error', message, ...params)
-export const logMock = (message: string, ...params: any[]) =>
+export const logMock = (message: string, ...params: unknown[]) =>
   log('mock', message, ...params)

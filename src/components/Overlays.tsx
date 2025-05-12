@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Prediction } from '@/types/types'
 
-import TwoOutcomes from './TwoOutcomes'
+import TwoOutcomes from './predictionsOutcomes/TwoOutcomes/TwoOutcomes'
 
 const Overlays = ({ prediction }: { prediction: Prediction | null }) => {
   if (!prediction) return

@@ -24,7 +24,7 @@ export const initWebSocketServer = (port: number = 8080) => {
   return frontendWss
 }
 
-export const broadcastToFrontend = (data: any) => {
+export const broadcastToFrontend = (data: unknown) => {
   const json = JSON.stringify(data)
   connectedClients.forEach((client) => {
     if (client.readyState === client.OPEN) {

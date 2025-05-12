@@ -55,14 +55,6 @@ export const calculatePercentage = (value: number, total: number): number => {
   return Math.round((value / total) * 100)
 }
 
-export const calculateElapsedPercent = (
-  elapsed: number,
-  total: number
-): number => {
-  if (total === 0) return 0
-  return Math.min(100, Math.max(0, Math.round((elapsed / total) * 100)))
-}
-
 export const calculateSecondsFromDate = (fromDate: string, seconds: number) => {
   const dateTime = new Date(fromDate).getTime()
   const now = Date.now()
