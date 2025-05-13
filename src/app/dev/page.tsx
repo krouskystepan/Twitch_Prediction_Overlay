@@ -29,6 +29,8 @@ const DevPage = () => {
     resetPrediction,
   } = useMockPrediction()
 
+  const [buttonsDisabled, setButtonsDisabled] = useState(false)
+
   useEffect(() => {
     if (!prediction?.prediction_window || !prediction.created_at) return
     if (prediction.status !== 'ACTIVE') return
@@ -98,6 +100,9 @@ const DevPage = () => {
                 try {
                   createPrediction(num, time)
                   setError(null)
+
+                  setButtonsDisabled(true)
+                  setTimeout(() => setButtonsDisabled(false), 1000)
                 } catch (e) {
                   console.log(e)
                   if (e instanceof Error) {
@@ -122,7 +127,10 @@ const DevPage = () => {
               <Button
                 variant={variant}
                 key={label}
+                disabled={buttonsDisabled}
                 onClick={() => {
+                  if (buttonsDisabled) return
+
                   try {
                     fce()
                     setError(null)
@@ -133,6 +141,9 @@ const DevPage = () => {
                       setError('An unknown error occurred')
                     }
                   }
+
+                  setButtonsDisabled(true)
+                  setTimeout(() => setButtonsDisabled(false), 1000)
                 }}
               >
                 {label}
