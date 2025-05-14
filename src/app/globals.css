@@ -106,8 +106,8 @@
   body {
     @apply bg-background text-foreground;
   }
-}
 
-.truncate-left {
-  @apply truncate [text-align:left] [text-overflow:ellipsis] [direction:rtl];
+  .truncate-left {
+    @apply truncate [text-align:left] [text-overflow:ellipsis] [direction:rtl];
+  }
 }

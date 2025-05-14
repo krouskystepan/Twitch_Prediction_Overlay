@@ -30,6 +30,7 @@ const DevPage = () => {
   } = useMockPrediction()
 
   const [buttonsDisabled, setButtonsDisabled] = useState(false)
+  const [bgColor, setBgColor] = useState('#fff')
 
   useEffect(() => {
     if (!prediction?.prediction_window || !prediction.created_at) return
@@ -79,6 +80,33 @@ const DevPage = () => {
     },
   ] as const
 
+  const backgroundButtons = [
+    {
+      label: 'White',
+      value: '#fff',
+    },
+    {
+      label: 'Black',
+      value: '#000',
+    },
+    {
+      label: 'Red',
+      value: '#f00',
+    },
+    {
+      label: 'Green',
+      value: '#0f0',
+    },
+    {
+      label: 'Blue',
+      value: '#00f',
+    },
+    {
+      label: 'Yellow',
+      value: '#ff0',
+    },
+  ]
+
   return (
     <section className="flex flex-col gap-4 p-8">
       <div className="space-y-2">
@@ -89,7 +117,7 @@ const DevPage = () => {
         </p>
       </div>
 
-      <div className="space-y-2">
+      <div className="flex flex-wrap items-start gap-2 rounded-lg bg-neutral-100 p-4">
         <h2 className="text-2xl font-bold">Data Mock Buttons</h2>
         <div className="flex flex-wrap gap-2">
           {outcomes.map((num) => (
@@ -119,8 +147,8 @@ const DevPage = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-        <div className="space-y-2">
+      <div className="flex flex-col items-center justify-between gap-6 lg:flex-row">
+        <div className="flex flex-col items-start gap-2 rounded-lg bg-neutral-100 p-4">
           <h2 className="text-2xl font-bold">Data Actions Buttons</h2>
           <div className="flex flex-wrap gap-2">
             {dataActions.map(({ label, fce, variant }) => (
@@ -200,8 +228,29 @@ const DevPage = () => {
           </div>
         </div>
 
-        <div className="relative h-40 w-md overflow-hidden border border-black">
-          <Overlays prediction={prediction} />
+        <div className="flex flex-col items-center gap-4 rounded-lg bg-neutral-100 p-4 sm:flex-row">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold">Background Color</h2>
+            <div className="grid grid-cols-2 gap-2">
+              {backgroundButtons.map(({ label, value }) => (
+                <Button
+                  key={value}
+                  variant="outline"
+                  style={{ border: `1px solid ${value}` }}
+                  onClick={() => setBgColor(value)}
+                  className="capitalize"
+                >
+                  {label}
+                </Button>
+              ))}
+            </div>
+          </div>
+          <div
+            className={`relative h-40 w-md overflow-hidden border border-black transition-colors duration-500`}
+            style={{ backgroundColor: bgColor }}
+          >
+            <Overlays prediction={prediction} />
+          </div>
         </div>
       </div>
 

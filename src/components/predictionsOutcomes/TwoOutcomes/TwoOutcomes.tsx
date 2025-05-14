@@ -55,7 +55,7 @@ const TwoOutcomes = ({ prediction }: { prediction: Prediction }) => {
             animate={{ opacity: 1 }}
           >
             {/* Title */}
-            <motion.div
+            <motion.h2
               className="absolute top-2 left-0 line-clamp-1 flex w-full items-center justify-center text-xl font-semibold"
               initial={
                 prediction.status === 'RESOLVED'
@@ -82,7 +82,7 @@ const TwoOutcomes = ({ prediction }: { prediction: Prediction }) => {
               }
             >
               {prediction.title}
-            </motion.div>
+            </motion.h2>
 
             {/* Title stats*/}
             {prediction.status === 'RESOLVED' && (
