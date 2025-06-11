@@ -47,7 +47,8 @@
   --color-overlay-primary: var(--ovr-primary);
 
   --color-overlay-bar: var(--ovr-bar);
-  --color-overlay-total-prediction: var(--ovr-total-prediction);
+  --color-overlay-stats: var(--ovr-stats);
+  --color-overlay-stats-names: var(--ovr-stats-names);
 
   --color-overlay-chart-pink-light: var(--ovr-chart-pink-light);
   --color-overlay-chart-pink-dark: var(--ovr-chart-pink-dark);
@@ -59,7 +60,6 @@
 
   --color-overlay-win: var(--ovr-win);
   --color-overlay-loss: var(--ovr-loss);
-  --color-overlay-prediction-stats: var(--ovr-prediction-stats);
 }
 
 @theme {
@@ -116,7 +116,8 @@
   --ovr-primary: hsla(0, 0%, 100%, 100%);
 
   --ovr-bar: hsla(0, 0%, 16%, 100%);
-  --ovr-total-prediction: hsla(0, 0%, 30%, 100%);
+  --ovr-stats: hsl(0, 0%, 30%);
+  --ovr-stats-names: hsl(0, 0%, 19%);
 
   --ovr-chart-pink-light: hsla(311, 100%, 43%, 100%);
   --ovr-chart-pink-dark: hsla(310, 22%, 26%, 100%);
@@ -128,7 +129,6 @@
 
   --ovr-win: hsla(135, 79%, 75%, 100%);
   --ovr-loss: hsla(3, 87%, 78%, 100%);
-  --ovr-prediction-stats: hsl(0, 0%, 30%);
 }
 
 @layer base {

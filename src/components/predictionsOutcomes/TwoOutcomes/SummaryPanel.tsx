@@ -9,15 +9,18 @@ import {
 import ChannelPoints from '@/components/customIcons/ChannelPoints'
 
 // TODO: Make a animation for names to appear from the bottom
+// TODO: When resolved state and pink wins it is buggy, maybe make the delay longer?
 
 const SummaryPanel = ({ prediction }: { prediction: Prediction }) => {
   const winningPredictors = prediction.outcomes
     .filter((outcome) => outcome.id === prediction.winning_outcome_id)
     .flatMap((outcome) => outcome.top_predictors || [])
+    .sort((a, b) => (a.channel_points_won ?? 0) - (b.channel_points_won ?? 0))
 
   const losingPredictors = prediction.outcomes
     .filter((outcome) => outcome.id !== prediction.winning_outcome_id)
     .flatMap((outcome) => outcome.top_predictors || [])
+    .sort((a, b) => (a.channel_points_used ?? 0) - (b.channel_points_used ?? 0))
 
   const totalPoints = prediction.outcomes.reduce(
     (acc, outcome) => acc + (outcome.channel_points || 0),
@@ -30,13 +33,13 @@ const SummaryPanel = ({ prediction }: { prediction: Prediction }) => {
 
   return (
     <motion.div
-      className="bg-overlay-bar flex h-[52px] flex-col justify-between overflow-hidden rounded-md p-1"
+      className="bg-overlay-bar relative flex flex-col justify-between overflow-hidden rounded-md p-1"
       initial={{ height: '52px' }}
       animate={{ height: '100px' }}
-      transition={{ duration: 0.3, ease: 'easeInOut', delay: 2 }}
+      transition={{ duration: 0.3, ease: 'easeInOut', delay: 2.3 }}
     >
       {/* Scrollable Names */}
-      <div className="flex flex-1 gap-2 overflow-y-auto px-1">
+      <div className="flex h-12 flex-1 gap-2 overflow-y-hidden px-1">
         <NamesLayout
           title="Top Winners"
           arrToMap={winningPredictors}
@@ -49,8 +52,7 @@ const SummaryPanel = ({ prediction }: { prediction: Prediction }) => {
         />
       </div>
 
-      {/* Total Stats (always pinned at the bottom) */}
-      <div className="bg-overlay-prediction-stats mx-auto mt-1 flex h-5 w-64 items-center justify-center gap-2 rounded-sm text-xs font-semibold text-white">
+      <div className="bg-overlay-stats mx-auto mt-1 flex h-5 w-56 items-center justify-center gap-2 rounded-sm text-xs font-semibold text-white">
         <span>Total Stats</span>
         <span className="flex items-center gap-1">
           <ChannelPoints size={10} />
@@ -81,16 +83,26 @@ const NamesLayout = ({
       <h3 className="text-sm font-bold uppercase">{title}</h3>
       <AnimatePresence>
         <motion.div
-          className="mx-auto flex w-full flex-col gap-1 overflow-y-auto"
+          className="flex w-full flex-col mask-y-from-70%"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ delay: 2.5, duration: 0.5 }}
         >
           {arrToMap.slice(0, 10).map((predictor) => (
-            <p
+            <motion.p
               key={predictor.user_id}
-              className="text-overlay-disabled flex justify-between text-[10px] leading-2"
+              className="odd:bg-overlay-stats-names text-overlay-disabled flex justify-between rounded-sm p-1 text-xs leading-2"
+              initial={{
+                translateY: '80px',
+              }}
+              animate={{
+                translateY: '-150px',
+              }}
+              transition={{
+                duration: 15,
+                ease: 'linear',
+              }}
             >
               {predictor.user_name}
               <span
@@ -103,7 +115,7 @@ const NamesLayout = ({
                     : predictor.channel_points_used) || 0
                 )}
               </span>
-            </p>
+            </motion.p>
           ))}
         </motion.div>
       </AnimatePresence>

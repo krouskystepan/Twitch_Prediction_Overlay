@@ -9,7 +9,7 @@ type DisappearStatus = Prediction['status'] | 'locked'
 const timesToDisappear: { status: DisappearStatus; time: number }[] = [
   { status: 'canceled', time: 5_000 },
   { status: 'locked', time: 3_000 },
-  // { status: 'resolved', time: 15_000 },
+  { status: 'resolved', time: 15_000 },
 ]
 
 const useDisappear = ({ status }: { status: DisappearStatus }) => {

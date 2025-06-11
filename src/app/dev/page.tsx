@@ -118,8 +118,8 @@ const DevPage = () => {
       <div className="space-y-2">
         <h1 className="text-4xl font-bold">🧪 Mock Predictions Panel</h1>
         <p className="text-xl font-semibold">
-          This is mock data for development only, so the values might not always
-          make sense.
+          This is mock data for development and testing only, so the values
+          might not always make sense.
         </p>
       </div>
 

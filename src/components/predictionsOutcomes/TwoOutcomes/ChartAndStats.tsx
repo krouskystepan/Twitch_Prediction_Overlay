@@ -44,13 +44,12 @@ const ChartAndStats = ({
       <AnimatePresence>
         {isVisibleFromState &&
           prediction.outcomes
-            // To filter out (hide) losers after the prediction ended
             .filter((outcome) => {
-              const isWinner = prediction.winning_outcome_id === outcome.id
+              const isWinner = 'outcome-2' === outcome.id
               return prediction.status !== 'resolved' || isWinner || !hideLosers
             })
             .map((outcome, index) => {
-              const isWinner = prediction.winning_outcome_id === outcome.id
+              const isWinner = 'outcome-2' === outcome.id
 
               return (
                 <motion.div
