@@ -10,6 +10,7 @@ const eventTypes = [
   'channel.prediction.begin',
   'channel.prediction.lock',
   'channel.prediction.end',
+  'channel.prediction.progress',
 ]
 
 export const startEventSubSession = (
@@ -93,6 +94,9 @@ export const startEventSubSession = (
             break
           case 'channel.prediction.end':
             logInfo('Prediction ended:', event.title)
+            break
+          case 'channel.prediction.progress':
+            logInfo('Prediction progress:', event.title)
             break
           default:
             logWarn('Unknown prediction type:', subscription_type)

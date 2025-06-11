@@ -45,13 +45,9 @@ export const MockPredictionProvider: React.FC<{
       broadcaster_name: 'MockStreamer',
       broadcaster_login: 'mockstreamer',
       title: `This is mock Prediction with ${outcomeCount} outcomes`,
-      winning_outcome_id: null,
-      outcomes: generateOutcomes(outcomeCount, 1),
-      prediction_window: time,
-      status: 'ACTIVE',
-      created_at: new Date().toISOString(),
-      ended_at: null,
-      locked_at: null,
+      outcomes: generateOutcomes(outcomeCount, 0),
+      started_at: new Date().toISOString(),
+      locks_at: new Date(Date.now() + time * 1000).toISOString(),
     }
 
     logMock('Creating new prediction')
@@ -79,20 +75,23 @@ export const MockPredictionProvider: React.FC<{
       throw new Error('No prediction to cancel')
     }
 
-    if (prediction.status === 'RESOLVED') {
+    if (prediction.status === 'resolved') {
       logMock('Prediction is already resolved')
       throw new Error('Prediction is already resolved')
     }
 
-    if (prediction.status === 'CANCELED') {
+    if (prediction.status === 'canceled') {
       logMock('Prediction is already canceled')
       throw new Error('Prediction is already canceled')
     }
 
+    delete prediction.locks_at
+    delete prediction.locked_at
+
     logMock('Canceling prediction')
     setPrediction({
       ...prediction,
-      status: 'CANCELED',
+      status: 'canceled',
       ended_at: new Date().toISOString(),
     })
   }
@@ -103,25 +102,27 @@ export const MockPredictionProvider: React.FC<{
       throw new Error('No prediction to lock')
     }
 
-    if (prediction.status === 'RESOLVED') {
-      logMock('Prediction is already resolved')
-      throw new Error('Prediction is already resolved')
-    }
-
-    if (prediction.status === 'CANCELED') {
-      logMock('Prediction is canceled')
-      throw new Error('Prediction is canceled')
-    }
-
-    if (prediction.status === 'LOCKED') {
+    if (prediction.locked_at !== undefined) {
       logMock('Prediction is already locked')
       throw new Error('Prediction is already locked')
     }
 
+    if (prediction.status === 'resolved') {
+      logMock('Prediction is already resolved')
+      throw new Error('Prediction is already resolved')
+    }
+
+    if (prediction.status === 'canceled') {
+      logMock('Prediction is canceled')
+      throw new Error('Prediction is canceled')
+    }
+
     logMock('Locking prediction')
+
+    delete prediction.locks_at
+
     setPrediction({
       ...prediction,
-      status: 'LOCKED',
       locked_at: new Date().toISOString(),
     })
   }
@@ -132,17 +133,17 @@ export const MockPredictionProvider: React.FC<{
       throw new Error('No prediction to resolve')
     }
 
-    if (prediction.status === 'RESOLVED') {
+    if (prediction.status === 'resolved') {
       logMock('Prediction is already resolved')
       throw new Error('Prediction is already resolved')
     }
 
-    if (prediction.status === 'CANCELED') {
+    if (prediction.status === 'canceled') {
       logMock('Prediction is canceled')
       throw new Error('Prediction is canceled')
     }
 
-    if (prediction.status !== 'LOCKED') {
+    if (prediction.locked_at === undefined) {
       logMock('Prediction is not locked')
       throw new Error('Prediction is not locked')
     }
@@ -160,10 +161,13 @@ export const MockPredictionProvider: React.FC<{
           : generateTopPredictors(10, false),
     }))
 
+    delete prediction.locks_at
+    delete prediction.locked_at
+
     logMock('Resolving prediction')
     setPrediction({
       ...prediction,
-      status: 'RESOLVED',
+      status: 'resolved',
       ended_at: new Date().toISOString(),
       winning_outcome_id: winning.id,
       outcomes: updatedOutcomes,

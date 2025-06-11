@@ -4,13 +4,24 @@ export const generateOutcomes = (
   count: number,
   magnitude: number
 ): Outcome[] => {
+  if (magnitude === 0) {
+    return Array.from({ length: count }, (_, i) => ({
+      id: `outcome-${i + 1}`,
+      title: `This is outcome number ${i + 1} of ${count}`,
+      color: count === 2 ? (i === 0 ? 'blue' : 'pink') : 'blue',
+    }))
+  }
+
   return Array.from({ length: count }, (_, i) => ({
     id: `outcome-${i + 1}`,
     title: `This is outcome number ${i + 1} of ${count}`,
+    color: count === 2 ? (i === 0 ? 'blue' : 'pink') : 'blue',
     users: Math.floor(Math.random() * 1_000 * magnitude),
     channel_points: Math.floor(Math.random() * 50_000 * magnitude),
-    top_predictors: null,
-    color: count === 2 ? (i === 0 ? 'BLUE' : 'PINK') : 'BLUE',
+    top_predictors: generateTopPredictors(
+      Math.floor(Math.random() * 5) + 1,
+      i === 0
+    ),
   }))
 }
 

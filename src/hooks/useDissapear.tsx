@@ -4,19 +4,23 @@ import { useEffect, useState } from 'react'
 
 import { Prediction } from '@/types/types'
 
-const timesToDisappear: { status: Prediction['status']; time: number }[] = [
-  { status: 'CANCELED', time: 5_000 },
-  { status: 'LOCKED', time: 2_000 },
-  { status: 'RESOLVED', time: 14_000 },
+type DisappearStatus = Prediction['status'] | 'locked'
+
+const timesToDisappear: { status: DisappearStatus; time: number }[] = [
+  { status: 'canceled', time: 5_000 },
+  { status: 'locked', time: 3_000 },
+  // { status: 'resolved', time: 15_000 },
 ]
 
-const useDisappear = ({ status }: { status: Prediction['status'] }) => {
+const useDisappear = ({ status }: { status: DisappearStatus }) => {
   const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
     let timeout: NodeJS.Timeout | null = null
 
-    const config = timesToDisappear.find((s) => s.status === status)
+    const config = status
+      ? timesToDisappear.find((s) => s.status === status)
+      : null
 
     if (config) {
       setIsVisible(true)

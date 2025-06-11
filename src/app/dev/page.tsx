@@ -30,34 +30,40 @@ const DevPage = () => {
   } = useMockPrediction()
 
   const [buttonsDisabled, setButtonsDisabled] = useState(false)
-  const [bgColor, setBgColor] = useState('#fff')
+  const [bgColor, setBgColor] = useState('#000')
 
   useEffect(() => {
-    if (!prediction?.prediction_window || !prediction.created_at) return
-    if (prediction.status !== 'ACTIVE') return
+    if (!prediction?.started_at) return
+    if (prediction?.locked_at || prediction.ended_at) return
 
-    const createdAt = new Date(prediction.created_at).getTime()
-    const totalMs = prediction.prediction_window * 1000
+    const lockedAt = prediction.locks_at
+      ? new Date(prediction.locks_at).getTime()
+      : prediction.locked_at
+        ? new Date(prediction.locked_at).getTime()
+        : 0
 
     const interval = setInterval(() => {
       const now = Date.now()
-      const elapsed = now - createdAt
+
+      if (now >= lockedAt) {
+        clearInterval(interval)
+        lockPrediction()
+        return
+      }
 
       updatePrediction(counter.current)
       counter.current += 1
-
-      if (elapsed >= totalMs) {
-        clearInterval(interval)
-        return
-      }
-    }, 10_000)
+    }, 5_000)
 
     return () => clearInterval(interval)
   }, [
-    prediction?.prediction_window,
-    prediction?.created_at,
-    prediction?.status,
+    prediction?.started_at,
+    prediction?.locked_at,
+    prediction?.locks_at,
+    prediction?.ended_at,
+    counter,
     updatePrediction,
+    lockPrediction,
   ])
 
   const outcomes = [2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -117,7 +123,7 @@ const DevPage = () => {
         </p>
       </div>
 
-      <div className="flex flex-wrap items-start gap-2 rounded-lg bg-neutral-100 p-4">
+      <div className="flex flex-wrap items-start gap-2 rounded-lg bg-neutral-800 p-4">
         <h2 className="text-2xl font-bold">Data Mock Buttons</h2>
         <div className="flex flex-wrap gap-2">
           {outcomes.map((num) => (
@@ -148,7 +154,7 @@ const DevPage = () => {
       </div>
 
       <div className="flex flex-col items-center justify-between gap-6 lg:flex-row">
-        <div className="flex flex-col items-start gap-2 rounded-lg bg-neutral-100 p-4">
+        <div className="flex flex-col items-start gap-2 rounded-lg bg-neutral-800 p-4">
           <h2 className="text-2xl font-bold">Data Actions Buttons</h2>
           <div className="flex flex-wrap gap-2">
             {dataActions.map(({ label, fce, variant }) => (
@@ -228,7 +234,7 @@ const DevPage = () => {
           </div>
         </div>
 
-        <div className="flex flex-col items-center gap-4 rounded-lg bg-neutral-100 p-4 sm:flex-row">
+        <div className="flex flex-col items-center gap-4 rounded-lg bg-neutral-800 p-4 sm:flex-row">
           <div className="space-y-2">
             <h2 className="text-2xl font-bold">Background Color</h2>
             <div className="grid grid-cols-2 gap-2">
@@ -256,7 +262,7 @@ const DevPage = () => {
 
       <div className="space-y-2">
         <h2 className="text-2xl font-bold">Current Mock Prediction</h2>
-        <p className="text-gray-500">
+        <p className="text-gray-200">
           Error:{' '}
           {error ? (
             <span className="font-semibold text-red-500">{error}</span>
@@ -264,7 +270,7 @@ const DevPage = () => {
             <span className="font-semibold text-green-500">No Errors</span>
           )}
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-gray-200 p-4 text-gray-800">
+        <pre className="overflow-x-auto rounded-lg bg-neutral-900 p-4 text-neutral-200">
           {prediction
             ? JSON.stringify(prediction, null, 2)
             : 'No prediction available'}

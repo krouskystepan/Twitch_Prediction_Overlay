@@ -3,16 +3,16 @@ export type TopPredictor = {
   user_name: string
   user_login: string
   channel_points_used: number
-  channel_points_won: number
+  channel_points_won: number | null
 }
 
 export type Outcome = {
   id: string
   title: string
-  users: number
-  channel_points: number
-  top_predictors: TopPredictor[] | null
-  color: 'PINK' | 'BLUE'
+  color: 'pink' | 'blue'
+  users?: number
+  channel_points?: number
+  top_predictors?: TopPredictor[] | []
 }
 
 /*
@@ -27,11 +27,11 @@ export type Prediction = {
   broadcaster_name: string
   broadcaster_login: string
   title: string
-  winning_outcome_id: string | null
   outcomes: Outcome[]
-  prediction_window: number
-  status: 'ACTIVE' | 'CANCELED' | 'LOCKED' | 'RESOLVED'
-  created_at: string
-  ended_at: string | null
-  locked_at: string | null
+  winning_outcome_id?: string
+  started_at: string
+  status?: 'resolved' | 'canceled'
+  locks_at?: string
+  locked_at?: string
+  ended_at?: string
 }

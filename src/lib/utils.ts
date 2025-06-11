@@ -15,10 +15,10 @@ export const formatNumberToReadableString = (number: number): string => {
   let formatted: string
   if (absNumber >= 1_000_000) {
     formatted =
-      (absNumber / 1_000_000).toFixed(absNumber % 1_000_000 === 0 ? 0 : 2) + 'M'
+      (absNumber / 1_000_000).toFixed(absNumber % 1_000_000 === 0 ? 0 : 1) + 'M'
   } else if (absNumber >= 1_000) {
     formatted =
-      (absNumber / 1_000).toFixed(absNumber % 1_000 === 0 ? 0 : 2) + 'k'
+      (absNumber / 1_000).toFixed(absNumber % 1_000 === 0 ? 0 : 1) + 'k'
   } else {
     formatted = absNumber.toString()
   }
@@ -55,27 +55,40 @@ export const calculatePercentage = (value: number, total: number): number => {
   return Math.round((value / total) * 100)
 }
 
-export const calculateSecondsFromDate = (fromDate: string, seconds: number) => {
-  const dateTime = new Date(fromDate).getTime()
-  const now = Date.now()
-  const diffMs = dateTime + seconds * 1000 - now
-  return Math.max(Math.ceil(diffMs / 1000), 0)
+export const getSecondsLeft = (
+  locks_at?: string,
+  locked_at?: string
+): number => {
+  const now = new Date()
+
+  if (locked_at) {
+    const lockedAt = new Date(locked_at)
+    if (now >= lockedAt) {
+      return -1
+    }
+  }
+
+  if (locks_at) {
+    const locksAt = new Date(locks_at)
+    const secondsLeft = Math.floor((locksAt.getTime() - now.getTime()) / 1000)
+    return secondsLeft
+  }
+
+  return -1
 }
 
 export const getStatusText = (
-  status: Prediction['status'],
+  status: Prediction['status'] | 'locked',
   secondsLeft: number
 ) => {
   switch (status) {
-    case 'ACTIVE':
-      return `${formatSeconds(secondsLeft)}`
-    case 'LOCKED':
-      return 'Locked'
-    case 'RESOLVED':
+    case 'resolved':
       return 'Resolved'
-    case 'CANCELED':
+    case 'canceled':
       return 'Refunded'
+    case 'locked':
+      return 'Locked'
     default:
-      return 'Unknown'
+      return secondsLeft > 0 ? `${formatSeconds(secondsLeft)}` : 'Locked'
   }
 }

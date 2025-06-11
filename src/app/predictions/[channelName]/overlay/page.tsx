@@ -13,7 +13,7 @@ const OverlayPage = () => {
     const ws = new WebSocket('ws://localhost:8080')
 
     ws.onmessage = (event) => {
-      const data = JSON.parse(event.data)
+      const data = JSON.parse(event.data).event
       setPrediction(data)
     }
 

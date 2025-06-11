@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Prediction } from '@/types/types'
 
 import TwoOutcomes from './predictionsOutcomes/TwoOutcomes/TwoOutcomes'
