@@ -2,16 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Dices, Trophy, Users } from 'lucide-react'
+import { Dices, Trophy } from 'lucide-react'
 
 import { Prediction } from '@/types/types'
 import {
   calculateMultiplier,
   calculatePercentage,
-  formatNumberToReadableString,
-  formatNumberWithSpaces,
 } from '@/lib/utils'
-import ChannelPoints from '@/components/customIcons/ChannelPoints'
 
 const ChartAndStats = ({
   prediction,
