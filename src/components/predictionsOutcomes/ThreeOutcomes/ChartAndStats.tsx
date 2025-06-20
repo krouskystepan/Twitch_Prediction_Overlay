@@ -5,10 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Dices, Trophy } from 'lucide-react'
 
 import { Prediction } from '@/types/types'
-import {
-  calculateMultiplier,
-  calculatePercentage,
-} from '@/lib/utils'
+import { calculateMultiplier, calculatePercentage } from '@/lib/utils'
 
 const ChartAndStats = ({
   prediction,
@@ -149,10 +146,16 @@ const ChartAndStats = ({
                       )}
                     </div>
                   </div>
-                  <div className="flex flex-nowrap items-center w-18 justify-start gap-1 ml-0.5" style={{ color: `var(--ovr-${outcome.color})`}}>
+                  <div
+                    className="ml-0.5 flex w-18 flex-nowrap items-center justify-start gap-1"
+                    style={{ color: `var(--ovr-${outcome.color})` }}
+                  >
                     <Dices size={16} />
                     <p className="text-xs font-medium text-nowrap text-white">
-                      {calculateMultiplier(outcome.channel_points || 0, totalChannelPoints)}
+                      {calculateMultiplier(
+                        outcome.channel_points || 0,
+                        totalChannelPoints
+                      )}
                     </p>
                   </div>
                 </motion.div>

@@ -8,7 +8,6 @@ import {
 } from '@/lib/utils'
 import ChannelPoints from '@/components/customIcons/ChannelPoints'
 
-
 const SummaryPanel = ({ prediction }: { prediction: Prediction }) => {
   const winningPredictors = prediction.outcomes
     .filter((outcome) => outcome.id === prediction.winning_outcome_id)

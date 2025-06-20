@@ -1,7 +1,7 @@
 import { Prediction } from '@/types/types'
 
-import TwoOutcomes from './predictionsOutcomes/TwoOutcomes/TwoOutcomes'
 import ThreeOutcomes from './predictionsOutcomes/ThreeOutcomes/ThreeOutcomes'
+import TwoOutcomes from './predictionsOutcomes/TwoOutcomes/TwoOutcomes'
 
 const Overlays = ({ prediction }: { prediction: Prediction | null }) => {
   if (!prediction) return
