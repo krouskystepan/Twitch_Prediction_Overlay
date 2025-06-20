@@ -8,7 +8,19 @@ import {
 } from '@/lib/utils'
 import ChannelPoints from '@/components/customIcons/ChannelPoints'
 
-const SummaryPanel = ({ prediction }: { prediction: Prediction }) => {
+const SummaryPanel = ({
+  prediction,
+  animations: { finalHeight, names },
+}: {
+  prediction: Prediction
+  animations: {
+    finalHeight: number
+    names: {
+      initialOffset: number
+      finalOffset: number
+    }
+  }
+}) => {
   const winningPredictors = prediction.outcomes
     .filter((outcome) => outcome.id === prediction.winning_outcome_id)
     .flatMap((outcome) => outcome.top_predictors || [])
@@ -32,7 +44,7 @@ const SummaryPanel = ({ prediction }: { prediction: Prediction }) => {
     <motion.div
       className="bg-overlay-bar relative flex flex-col justify-between overflow-hidden rounded-md p-1"
       initial={{ height: '52px' }}
-      animate={{ height: '115px' }}
+      animate={{ height: `${finalHeight}px` }}
       transition={{ duration: 0.3, ease: 'easeInOut', delay: 2.3 }}
     >
       {/* Scrollable Names */}
@@ -41,11 +53,13 @@ const SummaryPanel = ({ prediction }: { prediction: Prediction }) => {
           title="Top Winners"
           arrToMap={winningPredictors}
           isWin={true}
+          namesAnimation={names}
         />
         <NamesLayout
           title="Top Losers"
           arrToMap={losingPredictors}
           isWin={false}
+          namesAnimation={names}
         />
       </div>
 
@@ -70,17 +84,22 @@ const NamesLayout = ({
   title,
   arrToMap,
   isWin,
+  namesAnimation: { initialOffset, finalOffset },
 }: {
   title: string
   arrToMap: TopPredictor[]
   isWin: boolean
+  namesAnimation: {
+    initialOffset: number
+    finalOffset: number
+  }
 }) => {
   return (
     <div className="flex h-full flex-1 flex-col">
       <h3 className="text-sm font-bold uppercase">{title}</h3>
       <AnimatePresence>
         <motion.div
-          className="flex w-full flex-col mask-y-from-70%"
+          className="z-50 flex w-full flex-col mask-t-from-70%"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -91,10 +110,10 @@ const NamesLayout = ({
               key={predictor.user_id}
               className="odd:bg-overlay-stats-names text-overlay-disabled flex justify-between rounded-sm p-1 text-xs leading-2"
               initial={{
-                translateY: '80px',
+                translateY: `${initialOffset}px`,
               }}
               animate={{
-                translateY: '-150px',
+                translateY: `${finalOffset}px`,
               }}
               transition={{
                 duration: 15,

@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Dices, Trophy } from 'lucide-react'
 
 import { Prediction } from '@/types/types'
 import { calculateMultiplier, calculatePercentage } from '@/lib/utils'
+import useHideLosers from '@/hooks/useHideLosers'
 
 const ChartAndStats = ({
   prediction,
@@ -14,16 +14,9 @@ const ChartAndStats = ({
   prediction: Prediction
   isVisibleFromState: boolean
 }) => {
-  const [hideLosers, setHideLosers] = useState(false)
-
-  useEffect(() => {
-    if (prediction.status === 'resolved') {
-      const timeout = setTimeout(() => {
-        setHideLosers(true)
-      }, 2000) // 2 seconds
-      return () => clearTimeout(timeout)
-    }
-  }, [prediction.status])
+  const hideLosers = useHideLosers({
+    status: prediction.status,
+  })
 
   const totalChannelPoints = prediction.outcomes.reduce(
     (acc, outcome) => acc + (outcome.channel_points || 0),

@@ -4,16 +4,14 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Prediction } from '@/types/types'
 import useDisappear from '@/hooks/useDissapear'
 
+import HeaderAndTimer from '../shared/HeaderAndTimer'
+import SummaryPanel from '../shared/SummaryPanel'
 import ChartAndStats from './ChartAndStats'
-import HeaderAndTimer from './HeaderAndTimer'
-import SummaryPanel from './SummaryPanel'
 
 const TwoOutcomes = ({ prediction }: { prediction: Prediction }) => {
-  const disappearStatus =
-    prediction.status || (prediction.locked_at ? 'locked' : undefined)
-
   const { isVisible: isVisibleFromState } = useDisappear({
-    status: disappearStatus,
+    status: prediction.status,
+    locked_at: prediction.locked_at || undefined,
   })
 
   return (
@@ -28,7 +26,16 @@ const TwoOutcomes = ({ prediction }: { prediction: Prediction }) => {
                 </AnimatedDiv>
               ) : (
                 <AnimatedDiv key="summary">
-                  <SummaryPanel prediction={prediction} />
+                  <SummaryPanel
+                    prediction={prediction}
+                    animations={{
+                      finalHeight: 100,
+                      names: {
+                        initialOffset: 80,
+                        finalOffset: -150,
+                      },
+                    }}
+                  />
                 </AnimatedDiv>
               )}
             </AnimatePresence>

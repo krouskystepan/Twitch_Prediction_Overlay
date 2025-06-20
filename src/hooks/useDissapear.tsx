@@ -12,14 +12,22 @@ const timesToDisappear: { status: DisappearStatus; time: number }[] = [
   { status: 'resolved', time: 15_000 },
 ]
 
-const useDisappear = ({ status }: { status: DisappearStatus }) => {
+const useDisappear = ({
+  status,
+  locked_at,
+}: {
+  status: DisappearStatus
+  locked_at: string | undefined
+}) => {
+  const disappearStatus = status || (locked_at ? 'locked' : undefined)
+
   const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
     let timeout: NodeJS.Timeout | null = null
 
-    const config = status
-      ? timesToDisappear.find((s) => s.status === status)
+    const config = disappearStatus
+      ? timesToDisappear.find((s) => s.status === disappearStatus)
       : null
 
     if (config) {
@@ -34,7 +42,7 @@ const useDisappear = ({ status }: { status: DisappearStatus }) => {
     return () => {
       if (timeout) clearTimeout(timeout)
     }
-  }, [status])
+  }, [disappearStatus])
 
   return {
     isVisible,

@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Dices, Trophy, Users } from 'lucide-react'
 
@@ -11,6 +10,7 @@ import {
   formatNumberToReadableString,
   formatNumberWithSpaces,
 } from '@/lib/utils'
+import useHideLosers from '@/hooks/useHideLosers'
 import ChannelPoints from '@/components/customIcons/ChannelPoints'
 
 const ChartAndStats = ({
@@ -20,16 +20,9 @@ const ChartAndStats = ({
   prediction: Prediction
   isVisibleFromState: boolean
 }) => {
-  const [hideLosers, setHideLosers] = useState(false)
-
-  useEffect(() => {
-    if (prediction.status === 'resolved') {
-      const timeout = setTimeout(() => {
-        setHideLosers(true)
-      }, 2000) // 2 seconds
-      return () => clearTimeout(timeout)
-    }
-  }, [prediction.status])
+  const hideLosers = useHideLosers({
+    status: prediction.status,
+  })
 
   const totalChannelPoints = prediction.outcomes.reduce(
     (acc, outcome) => acc + (outcome.channel_points || 0),
