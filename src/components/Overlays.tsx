@@ -1,5 +1,6 @@
 import { Prediction } from '@/types/types'
 
+import ThreeOutcomes from './predictionsOutcomes/ThreeOutcomes/ThreeOutcomes'
 import TwoOutcomes from './predictionsOutcomes/TwoOutcomes/TwoOutcomes'
 
 const Overlays = ({ prediction }: { prediction: Prediction | null }) => {
@@ -9,6 +10,7 @@ const Overlays = ({ prediction }: { prediction: Prediction | null }) => {
     case 2:
       return <TwoOutcomes prediction={prediction} />
     case 3:
+      return <ThreeOutcomes prediction={prediction} />
     case 4:
     case 5:
     case 6:
